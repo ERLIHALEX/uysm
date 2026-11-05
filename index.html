@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЮУСМ | Дробильно-сортировочное оборудование</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .logo span {
+            color: #eab308;
+            /* Индустриальный желтый */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .hero {
+            background-color: #18181b;
+            /* Глубокий графитовый */
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #cbd5e0;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background-color: #eab308;
+            color: #18181b;
+            /* Темный текст на желтом фоне */
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ca8a04;
+            transform: translateY(-2px);
+        }
+
+        .catalog-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            color: #2c3e50;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #27272a;
+            /* Светлый графит */
+        }
+
+        .card p {
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            color: #eab308;
+            font-weight: 600;
+        }
+
+        footer {
+            background-color: #27272a;
+            /* Светлый графит */
+            color: #cbd5e0;
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Дробильно-сортировочное оборудование и комплектующие</h1>
+            <p>Прямые поставки оборудования и деталей из бронзы со склада в Челябинске.</p>
+            <a href="catalog.html" class="btn">Перейти в Каталог</a>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <h2 class="section-title">Основные направления</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Дробильное оборудование</h3>
+                <p>Щековые, конусные и роторные дробилки для получения щебня.</p>
+                <a href="catalog.html?category=drobilki" class="card-link">Смотреть остатки &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Грохоты и сортировка</h3>
+                <p>Инерционные и колосниковые грохоты для точного разделения.</p>
+                <a href="catalog.html?category=grohoty" class="card-link">Смотреть остатки &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Транспортировка</h3>
+                <p>Ленточные конвейеры, штабелеукладчики и питатели.</p>
+                <a href="catalog.html?category=konveyery" class="card-link">Смотреть остатки &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Запчасти и бронза</h3>
+                <p>Оригинальные комплектующие, брони, плиты и бронза.</p>
+                <a href="catalog.html?category=zapchasti" class="card-link">Смотреть остатки &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация» | <a href="contacts.html"
+                style="color: white; text-decoration: underline;">Контакты и карта проезда</a></p>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

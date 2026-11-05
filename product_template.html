@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}} | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .breadcrumbs {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .breadcrumbs a {
+            color: #eab308;
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 20px auto 60px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .product-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* --- МУЛЬТИМЕДИЙНЫЙ ХАБ (ВКЛАДКИ) --- */
+        .media-hub {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            overflow: hidden;
+        }
+
+        .tabs {
+            display: flex;
+            background: #edf2f7;
+            border-bottom: 1px solid #cbd5e0;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-weight: bold;
+            color: #4a5568;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .tab-btn.active {
+            color: #eab308;
+            border-bottom-color: #eab308;
+            background: white;
+        }
+
+        .tab-pane {
+            display: none;
+            height: 350px;
+            width: 100%;
+        }
+
+        .tab-pane.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blueprint-view {
+            background-color: #e2e8f0;
+            color: #a0aec0;
+            font-size: 1.2rem;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-view {
+            background-color: #18181b;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: #eab308;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .video-view:hover .play-btn {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: #ca8a04;
+        }
+
+        .play-triangle {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #18181b;
+            margin-left: 5px;
+        }
+
+        .video-title {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* 3D Модель */
+        .scene-3d {
+            perspective: 1000px;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #f4f4f5 0%, #cbd5e0 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            overflow: hidden;
+        }
+
+        .scene-3d:active {
+            cursor: grabbing;
+        }
+
+        .cube {
+            width: 160px;
+            height: 200px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-15deg) rotateY(35deg);
+        }
+
+        .cube-face {
+            position: absolute;
+            border: 2px solid #18181b;
+            background: rgba(234, 179, 8, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #18181b;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .face-front,
+        .face-back {
+            width: 160px;
+            height: 200px;
+        }
+
+        .face-left,
+        .face-right {
+            width: 160px;
+            height: 200px;
+        }
+
+        .face-top,
+        .face-bottom {
+            width: 160px;
+            height: 160px;
+        }
+
+        .face-front {
+            transform: translateZ(80px);
+        }
+
+        .face-back {
+            transform: rotateY(180deg) translateZ(80px);
+        }
+
+        .face-right {
+            transform: rotateY(90deg) translateZ(80px);
+        }
+
+        .face-left {
+            transform: rotateY(-90deg) translateZ(80px);
+        }
+
+        .face-top {
+            transform: rotateX(90deg) translateZ(80px);
+        }
+
+        .face-bottom {
+            transform: rotateX(-90deg) translateZ(120px);
+        }
+
+        /* --- ПОЛЗУНОК ДО/ПОСЛЕ --- */
+        .comparison-wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            margin-top: 5px;
+        }
+
+        .comp-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .comp-before {
+            background: #4a5568;
+            color: white;
+            z-index: 1;
+        }
+
+        .comp-after {
+            background: #eab308;
+            color: #18181b;
+            z-index: 2;
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+        }
+
+        .comp-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            opacity: 0;
+            cursor: ew-resize;
+        }
+
+        .slider-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: white;
+            z-index: 2;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #eab308;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            font-size: 1.2rem;
+        }
+
+        /* --- ПРАВАЯ КОЛОНКА --- */
+        .product-info {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .product-title {
+            font-size: 2.2rem;
+            color: #27272a;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .sku {
+            font-size: 0.9rem;
+            color: #a0aec0;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .status-box {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #c6f6d5;
+            color: #22543d;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            flex: 1;
+            padding: 15px;
+            background-color: #eab308;
+            color: #18181b;
+            border-radius: 6px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: #ca8a04;
+        }
+
+        .btn-secondary {
+            padding: 15px 25px;
+            background-color: #eab308;
+            color: #18181b;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ca8a04;
+        }
+
+        .b2b-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #edf2f7;
+            padding-top: 25px;
+        }
+
+        .tool-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .tool-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #27272a;
+        }
+
+        .tool-card input,
+        .tool-card select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            transition: 0.3s;
+        }
+
+        .tool-card input:focus,
+        .tool-card select:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+        }
+
+        input[type=range]:not(.comp-slider) {
+            -webkit-appearance: none;
+            width: 100%;
+            margin: 15px 0;
+            background: transparent;
+        }
+
+        input[type=range]:not(.comp-slider):focus {
+            outline: none;
+        }
+
+        input[type=range]:not(.comp-slider)::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #27272a;
+            border-radius: 4px;
+            border: 1px solid #18181b;
+        }
+
+        input[type=range]:not(.comp-slider)::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #eab308;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -9px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid #18181b;
+        }
+
+        input[type=range]:not(.comp-slider):focus::-webkit-slider-thumb {
+            background: #ca8a04;
+        }
+
+        .tool-result {
+            font-weight: bold;
+            color: #4a5568;
+            margin-top: 5px;
+            font-size: 1.1rem;
+        }
+
+        .specs-section {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .specs-table th {
+            background-color: #f7fafc;
+            width: 40%;
+            color: #4a5568;
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        /* --- БЛОК ПЕЧАТИ (PDF ГЕНЕРАТОР) --- */
+        .print-header {
+            display: none;
+        }
+
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            body {
+                background-color: #ffffff;
+                color: #000000;
+            }
+
+            header,
+            .breadcrumbs,
+            .action-buttons,
+            footer,
+            .comp-slider,
+            .slider-button,
+            .slider-line,
+            .tabs {
+                display: none !important;
+            }
+
+            .print-header {
+                display: block;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 2px solid #27272a;
+            }
+
+            .product-container {
+                display: block;
+                margin: 0;
+                padding: 0;
+            }
+
+            .product-gallery {
+                margin-bottom: 30px;
+                page-break-inside: avoid;
+            }
+
+            .tab-pane {
+                display: none !important;
+            }
+
+            #tab-blueprint {
+                display: flex !important;
+                height: 300px;
+            }
+
+            .comp-after {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+            }
+
+            .product-info {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+            }
+
+            .b2b-tools {
+                border-top: 2px solid #cbd5e0;
+                padding-top: 20px;
+                page-break-inside: avoid;
+            }
+
+            .tool-card {
+                border: 1px solid #cbd5e0;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .specs-section {
+                margin: 30px 0;
+                padding: 0;
+                page-break-inside: avoid;
+            }
+
+            .specs-table {
+                border: 1px solid #cbd5e0;
+            }
+
+            .specs-table th,
+            .specs-table td {
+                border-bottom: 1px solid #cbd5e0;
+                border-right: 1px solid #cbd5e0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="print-header" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h2 style="font-size: 2.5rem; color: #18181b; margin-bottom: 5px;">ЮУ<span
+                        style="color: #eab308;">СМ</span></h2>
+                <p style="font-weight: bold; font-size: 1.1rem;">ООО «Южуралстроймеханизация»</p>
+                <p style="color: #4a5568;">г. Челябинск, ул. Белорецкая, 60А | +7 (351) 262-41-60 | uysm@mail.ru</p>
+            </div>
+            <div style="text-align: right;">
+                <h1 style="font-size: 1.8rem; text-transform: uppercase; color: #27272a; margin-bottom: 10px;">
+                    Коммерческое предложение</h1>
+                <p style="font-size: 1.1rem; font-weight: bold;">Дата: <span id="print-date"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumbs">
+        <a href="index.html">Главная</a> / <a href="catalog.html">Каталог</a> / {{CATEGORY}} / {{TITLE}}
+    </div>
+
+    <div class="product-container">
+        <div class="product-gallery">
+            <div class="media-hub">
+                <div class="tabs">
+                    <!-- IF_EQUIPMENT -->
+                    <button class="tab-btn active" data-target="tab-3d">3D Модель</button>
+                    <!-- ENDIF_EQUIPMENT -->
+                    <button class="tab-btn" data-target="tab-blueprint">Чертёж (ГОСТ)</button>
+                    <!-- IF_EQUIPMENT -->
+                    <button class="tab-btn" data-target="tab-video">Видео в карьере</button>
+                    <!-- ENDIF_EQUIPMENT -->
+                </div>
+
+                <!-- IF_EQUIPMENT -->
+                <div id="tab-3d" class="tab-pane active">
+                    <div class="scene-3d" id="scene-3d">
+                        <div class="cube" id="cube">
+                            <div class="cube-face face-front">КСД-600</div>
+                            <div class="cube-face face-back">ЮУСМ</div>
+                            <div class="cube-face face-right"></div>
+                            <div class="cube-face face-left"></div>
+                            <div class="cube-face face-top">Приемник</div>
+                            <div class="cube-face face-bottom">Станина</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ENDIF_EQUIPMENT -->
+
+                <div id="tab-blueprint" class="tab-pane">
+                    <div class="blueprint-view">Чертеж и схема (ГОСТ)</div>
+                </div>
+
+                <!-- IF_EQUIPMENT -->
+                <div id="tab-video" class="tab-pane">
+                    <div class="video-view" onclick="alert('Запуск видеоплеера...')">
+                        <div class="play-btn">
+                            <div class="play-triangle"></div>
+                        </div>
+                        <div class="video-title">▶ Дробление габбро-диабаза</div>
+                    </div>
+                </div>
+                <!-- ENDIF_EQUIPMENT -->
+            </div>
+
+            <h3 style="margin-top: 15px; font-size: 1.1rem; color: #4a5568;">Результат дробления (Фракция):</h3>
+            <div class="comparison-wrapper">
+                <div class="comp-img comp-before">Исходная порода (до 90 мм)</div>
+                <div class="comp-img comp-after" id="comp-after">Готовый кубовидный щебень</div>
+                <div class="slider-line" id="slider-line"></div>
+                <div class="slider-button" id="slider-button">▶</div>
+                <input type="range" min="0" max="100" value="50" class="comp-slider" id="comp-slider">
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title">{{TITLE}}</h1>
+            <div class="sku">Артикул: {{SKU}} | Масса: по запросу</div>
+
+            <div class="status-box">В наличии на складе</div>
+
+            <p style="margin-bottom: 25px; color: #4a5568; font-size: 1.05rem;">
+                Обеспечивает стабильную фракцию на выходе и высокую производительность при переработке твердых пород.
+            </p>
+
+            <div class="action-buttons">
+                <button class="btn-primary" onclick="window.print()">Сгенерировать КП (PDF)</button>
+                <a href="https://wa.me/79090911313" class="btn-secondary" target="_blank">WhatsApp</a>
+            </div>
+
+            <div class="b2b-tools">
+                <div class="tool-card">
+                    <h3>⚡ Калькулятор затрат электроэнергии (год)</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label style="font-size: 0.9rem;">Тариф (руб/кВт·ч)</label>
+                            <input type="number" id="tco-energy" value="7" oninput="calcAll()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem;">Смен в день (по 8ч)</label>
+                            <input type="number" id="tco-shifts" value="2" oninput="calcAll()">
+                        </div>
+                    </div>
+                    <div class="tool-result">Ориентировочный расход: <span id="tco-total">0</span> руб/год.</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="tool-card">
+                        <h3>🚚 Логистика</h3>
+                        <label style="font-size: 0.9rem;">Регион доставки:</label>
+                        <select id="logistics-region" onchange="calcAll()">
+                            <option value="50000">УрФО (~500 км)</option>
+                            <option value="120000" selected>ЦФО (~1700 км)</option>
+                            <option value="250000">Сибирь</option>
+                        </select>
+                        <div class="tool-result" style="color: #ca8a04; font-size: 1rem;">Цена: от <span
+                                id="log-cost">120 000</span> руб.</div>
+                    </div>
+
+                    <div class="tool-card">
+                        <h3>💼 Лизинг</h3>
+                        <label style="font-size: 0.9rem;">Аванс: <span id="leasing-avans-val">30</span>%</label>
+                        <input type="range" id="leasing-avans" min="10" max="50" step="5" value="30"
+                            oninput="calcAll()">
+                        <div class="tool-result" style="color: #ca8a04; font-size: 1rem;">От: <span
+                                id="leasing-month">75 000</span> руб/мес.</div>
+                    </div>
+                </div>
+
+                <div class="tool-card" style="grid-column: 1 / -1;">
+                    <h3 style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>📈 График окупаемости (ROI Timeline)</span>
+                    </h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">
+                        <div>
+                            <label style="font-size: 0.9rem; color: #4a5568;">Стоимость агрегата (руб)</label>
+                            <input type="number" id="roi-cost" value="3000000" oninput="calcROI()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem; color: #4a5568;">Чистая прибыль с 1 тонны (руб)</label>
+                            <input type="number" id="roi-profit" value="150" oninput="calcROI()">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.9rem; color: #4a5568;">Загрузка (тонн в месяц)</label>
+                            <input type="number" id="roi-capacity" value="10000" oninput="calcROI()">
+                        </div>
+                    </div>
+                    <div
+                        style="margin-top: 25px; padding: 20px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span style="font-weight: bold; color: #27272a;">Инвестиции</span>
+                            <span style="font-weight: bold; color: #25d366;">Точка окупаемости: <span
+                                    id="roi-result-months" style="font-size: 1.2rem;">2.0</span> мес.</span>
+                        </div>
+                        <div
+                            style="position: relative; height: 30px; background: #edf2f7; border-radius: 15px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);">
+                            <div id="roi-bar"
+                                style="height: 100%; width: 20%; background: linear-gradient(90deg, #fc8181 0%, #ecc94b 50%, #68d391 100%); transition: width 0.5s ease-in-out; -webkit-print-color-adjust: exact; print-color-adjust: exact;">
+                            </div>
+                            <div
+                                style="position: absolute; top: 0; left: 50%; width: 2px; height: 100%; background: #a0aec0; z-index: 2;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="specs-section">
+        <h2 style="margin-bottom: 20px;">Технические характеристики</h2>
+        <table class="specs-table">
+            <tr>
+                <th>Мощность главного привода, кВт</th>
+                <td>30</td>
+            </tr>
+            <tr>
+                <th>Масса, т</th>
+                <td>4.8</td>
+            </tr>
+            <tr>
+                <th>Производительность, м³/ч</th>
+                <td>19 - 40</td>
+            </tr>
+            <tr>
+                <th>Диапазон регулирования щели, мм</th>
+                <td>12 - 35</td>
+            </tr>
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация»</p>
+    </footer>
+
+    <script>
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabPanes.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.target).classList.add('active');
+            });
+        });
+
+        const scene = document.getElementById('scene-3d');
+        const cube = document.getElementById('cube');
+
+        if (scene && cube) {
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            let rotation = { x: -15, y: 35 };
+
+            scene.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.offsetX, y: e.offsetY };
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+                rotation.y += deltaMove.x * 0.5;
+                rotation.x -= deltaMove.y * 0.5;
+                if (rotation.x > 90) rotation.x = 90;
+                if (rotation.x < -90) rotation.x = -90;
+                cube.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+                previousMousePosition = { x: e.offsetX, y: e.offsetY };
+            });
+
+            document.addEventListener('mouseup', () => { isDragging = false; });
+            scene.addEventListener('mouseleave', () => { isDragging = false; });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const dateEl = document.getElementById('print-date');
+            if (dateEl) dateEl.innerText = new Date().toLocaleDateString('ru-RU');
+            calcAll();
+            calcROI();
+        });
+
+        const slider = document.getElementById('comp-slider');
+        const afterImg = document.getElementById('comp-after');
+        const sliderLine = document.getElementById('slider-line');
+        const sliderBtn = document.getElementById('slider-button');
+
+        if (slider) {
+            slider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                afterImg.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+                sliderLine.style.left = `${val}%`;
+                sliderBtn.style.left = `${val}%`;
+            });
+        }
+
+        function calcAll() {
+            const kw = 30;
+            const price = parseFloat(document.getElementById('tco-energy').value) || 0;
+            const shifts = parseFloat(document.getElementById('tco-shifts').value) || 0;
+            document.getElementById('tco-total').innerText = (kw * price * (shifts * 8 * 250)).toLocaleString('ru-RU');
+            document.getElementById('log-cost').innerText = parseInt(document.getElementById('logistics-region').value).toLocaleString('ru-RU');
+            const avansPercent = document.getElementById('leasing-avans').value;
+            document.getElementById('leasing-avans-val').innerText = avansPercent;
+            const financed = 3000000 * (1 - avansPercent / 100);
+            document.getElementById('leasing-month').innerText = Math.round((financed / 36) * 1.15).toLocaleString('ru-RU');
+        }
+
+        function calcROI() {
+            const cost = parseFloat(document.getElementById('roi-cost').value) || 0;
+            const profit = parseFloat(document.getElementById('roi-profit').value) || 0;
+            const cap = parseFloat(document.getElementById('roi-capacity').value) || 0;
+            const monthly = profit * cap;
+            let months = monthly > 0 ? (cost / monthly).toFixed(1) : 0;
+            document.getElementById('roi-result-months').innerText = months > 0 ? months : "∞";
+            document.getElementById('roi-bar').style.width = (months > 0 ? Math.min((months / 12) * 100, 100) : 0) + '%';
+        }
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

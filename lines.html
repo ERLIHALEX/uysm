@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Технологические линии и Инжиниринг | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .page-header {
+            background-color: #18181b;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #cbd5e0;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27272a;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .line-grid {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .flowchart-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .node {
+            width: 100%;
+            max-width: 350px;
+            padding: 15px;
+            background-color: #f4f4f5;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #4a5568;
+        }
+
+        .node:hover {
+            background-color: #fef9c3;
+            border-color: #eab308;
+            transform: translateY(-2px);
+            color: #ca8a04;
+        }
+
+        .node.active {
+            background-color: #eab308;
+            color: #18181b;
+            border-color: #ca8a04;
+        }
+
+        .arrow {
+            width: 2px;
+            height: 20px;
+            background-color: #a0aec0;
+        }
+
+        .info-panel {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            border: 2px solid #eab308;
+            position: sticky;
+            top: 100px;
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #27272a;
+        }
+
+        .info-desc {
+            color: #4a5568;
+            margin-bottom: 20px;
+            min-height: 80px;
+        }
+
+        .info-specs {
+            padding: 15px;
+            background: #f4f4f5;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .btn-link {
+            display: inline-block;
+            padding: 12px 20px;
+            background-color: #eab308;
+            color: #18181b;
+            border-radius: 5px;
+            font-weight: bold;
+            width: 100%;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .btn-link:hover {
+            background-color: #ca8a04;
+        }
+
+        .calc-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .slider-container {
+            margin-bottom: 30px;
+        }
+
+        /* --- КАСТОМНЫЕ ПОЛЗУНКИ (RANGE SLIDERS) --- */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            margin: 15px 0;
+            background: transparent;
+        }
+
+        input[type=range]:focus {
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #27272a;
+            border-radius: 4px;
+            border: 1px solid #18181b;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #eab308;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -9px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            border: 2px solid #18181b;
+        }
+
+        input[type=range]:focus::-webkit-slider-thumb {
+            background: #ca8a04;
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .result-box {
+            background: #f4f4f5;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .result-box h4 {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .result-box .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .result-box .value span {
+            font-size: 1rem;
+            color: #a0aec0;
+        }
+
+        .infra-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- ИНТЕРАКТИВНЫЙ ПЛАН ЦЕХА (SVG) --- */
+        .layout-container {
+            width: 100%;
+            height: 300px;
+            background-color: #18181b;
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #3f3f46;
+        }
+
+        .layout-container svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .layout-node {
+            fill: #3f3f46;
+            stroke: #718096;
+            stroke-width: 2;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .layout-node:hover {
+            fill: #eab308;
+            stroke: #ca8a04;
+        }
+
+        .layout-conveyor {
+            stroke: #52525b;
+            stroke-width: 6;
+            stroke-dasharray: 4, 2;
+        }
+
+        .layout-tooltip {
+            position: absolute;
+            background: #eab308;
+            color: #18181b;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10;
+            transition: opacity 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+        }
+
+        .video-demo {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .form-wrapper {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+        }
+
+        .btn-whatsapp {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #eab308;
+            color: #18181b;
+            text-align: center;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #ca8a04;
+        }
+
+        .teo-card {
+            background: #27272a;
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .btn-download {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #eab308;
+            color: #18181b;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background-color: #ca8a04;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>Инжиниринг и проектирование линий</h1>
+        <p>Готовые решения по переработке. От подбора оборудования до интеграции в производственный цех и расчета
+            окупаемости.</p>
+    </div>
+
+    <!-- 1. Интерактивная схема -->
+    <div class="section-container">
+        <h2 class="section-title">Структурная блок-схема процесса ДСУ-30</h2>
+        <div class="line-grid">
+            <div class="flowchart-wrapper">
+                <div class="flowchart">
+                    <div class="node active" onclick="showInfo('feed')">1. Бункер-питатель (Подача)</div>
+                    <div class="arrow"></div>
+                    <div class="node" onclick="showInfo('primary')">2. Первичное дробление (Щековая)</div>
+                    <div class="arrow"></div>
+                    <div class="node" onclick="showInfo('screen')">3. Сортировка (Грохот)</div>
+                    <div class="arrow"></div>
+                    <div class="node" onclick="showInfo('secondary')">4. Вторичное дробление (Конусная)</div>
+                </div>
+            </div>
+
+            <div class="info-panel" id="panel">
+                <h3 class="info-title" id="p-title">1. Приемный бункер и питатель</h3>
+                <div class="info-desc" id="p-desc">Обеспечивает равномерную подачу горной массы. Снижает пиковые
+                    нагрузки на двигатели последующих агрегатов.</div>
+                <div class="info-specs" id="p-specs"><strong>Мощность:</strong> 5.5 кВт</div>
+                <a href="catalog.html?filter=pitately" class="btn-link" id="p-link">Найти агрегат на складе</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Экономика линии (Калькулятор) -->
+    <div class="section-container">
+        <h2 class="section-title">Калькулятор выхода готовой продукции</h2>
+        <div class="calc-wrapper">
+            <div class="slider-container">
+                <label style="font-weight: bold; font-size: 1.2rem;">Производительность по исходному сырью: <span
+                        id="capacity-val" style="color: #ca8a04;">100</span> т/ч</label>
+                <input type="range" id="capacity-slider" min="30" max="300" step="10" value="100"
+                    oninput="calculateYield()">
+                <p style="color: #718096; font-size: 0.9rem; margin-top: 10px;">* Расчет приведен для гранита средней
+                    крепости. Процент
+                    выхода зависит от настроек разгрузочной щели дробилок.</p>
+            </div>
+            <div class="calc-results">
+                <div class="result-box">
+                    <h4>Кубовидный щебень 5-20 мм (30%)</h4>
+                    <div class="value" id="res-1">30 <span>т/ч</span></div>
+                </div>
+                <div class="result-box">
+                    <h4>Щебень 20-40 мм (50%)</h4>
+                    <div class="value" id="res-2">50 <span>т/ч</span></div>
+                </div>
+                <div class="result-box">
+                    <h4>Отсев 0-5 мм (20%)</h4>
+                    <div class="value" id="res-3">20 <span>т/ч</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Инфраструктура, План цеха и Видео -->
+    <div class="section-container">
+        <h2 class="section-title">Интеграция в производство и Демонстрация</h2>
+
+        <div class="infra-grid" style="margin-bottom: 40px;">
+
+            <!-- БЛОК ПЛАНА ЦЕХА (SVG) -->
+            <div class="blueprint"
+                style="background: #27272a; padding: 30px; border-radius: 8px; display: flex; flex-direction: column;">
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem; color: white;">Визуализация расстановки (План цеха)
+                </h3>
+                <p style="color: #cbd5e0; margin-bottom: 20px; font-size: 0.95rem;">Проектирование фундаментов,
+                    подъездных путей и конвейерных эстакад (Вид сверху).</p>
+
+                <div class="layout-container" id="layout-container">
+                    <div class="layout-tooltip" id="layout-tooltip">Агрегат</div>
+
+                    <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                        <!-- CAD Сетка -->
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" />
+                        </pattern>
+                        <rect width="100%" height="100%" fill="url(#grid)" />
+
+                        <!-- Подъездной путь для самосвалов -->
+                        <path d="M -10 150 L 120 150 L 150 200 L 150 410" stroke="#27272a" stroke-width="60"
+                            fill="none" />
+                        <path d="M -10 150 L 120 150 L 150 200 L 150 410" stroke="#3f3f46" stroke-width="56"
+                            fill="none" />
+                        <text x="20" y="155" fill="#718096" font-size="12" font-weight="bold">ПОДЪЕЗД</text>
+
+                        <!-- Зоны обслуживания (Пунктир) -->
+                        <rect x="180" y="100" width="120" height="100" stroke="#eab308" stroke-dasharray="5,5"
+                            fill="none" stroke-width="1" />
+                        <text x="185" y="115" fill="#eab308" font-size="10">Зона ТО 1</text>
+
+                        <rect x="420" y="100" width="120" height="180" stroke="#eab308" stroke-dasharray="5,5"
+                            fill="none" stroke-width="1" />
+                        <text x="425" y="115" fill="#eab308" font-size="10">Зона ТО 2</text>
+
+                        <!-- Конвейеры (Линии) -->
+                        <line x1="280" y1="150" x2="450" y2="150" class="layout-conveyor" />
+                        <!-- От Щековой к Грохоту -->
+                        <line x1="490" y1="180" x2="490" y2="230" class="layout-conveyor" />
+                        <!-- От Грохота к Конусной -->
+                        <line x1="490" y1="250" x2="300" y2="250" class="layout-conveyor" />
+                        <!-- Возврат от Конусной (Замкнутый цикл) -->
+                        <line x1="300" y1="250" x2="300" y2="150" class="layout-conveyor" />
+
+                        <line x1="510" y1="130" x2="650" y2="80" class="layout-conveyor" /> <!-- На склад 1 -->
+                        <line x1="510" y1="150" x2="680" y2="150" class="layout-conveyor" /> <!-- На склад 2 -->
+                        <line x1="510" y1="170" x2="650" y2="220" class="layout-conveyor" /> <!-- На склад 3 -->
+
+                        <!-- ИНТЕРАКТИВНЫЕ АГРЕГАТЫ -->
+
+                        <!-- 1. Бункер-питатель -->
+                        <g class="layout-node" data-title="1. Бункер-питатель (Прием сырья)">
+                            <rect x="120" y="120" width="60" height="60" rx="4" />
+                            <line x1="130" y1="130" x2="170" y2="170" stroke="#18181b" stroke-width="2" />
+                            <line x1="170" y1="130" x2="130" y2="170" stroke="#18181b" stroke-width="2" />
+                        </g>
+
+                        <!-- 2. Щековая дробилка -->
+                        <g class="layout-node" data-title="2. Первичное дробление (СМД-110А)">
+                            <rect x="200" y="130" width="80" height="40" rx="4" />
+                            <rect x="210" y="135" width="60" height="30" fill="#18181b" />
+                        </g>
+
+                        <!-- 3. Грохот -->
+                        <g class="layout-node" data-title="3. Сортировка (Грохот ГИЛ-42)">
+                            <rect x="450" y="120" width="60" height="60" rx="4" />
+                            <line x1="460" y1="120" x2="460" y2="180" stroke="#18181b" stroke-width="2" />
+                            <line x1="480" y1="120" x2="480" y2="180" stroke="#18181b" stroke-width="2" />
+                            <line x1="500" y1="120" x2="500" y2="180" stroke="#18181b" stroke-width="2" />
+                        </g>
+
+                        <!-- 4. Конусная дробилка -->
+                        <g class="layout-node" data-title="4. Вторичное дробление (КСД-600)">
+                            <circle cx="490" cy="250" r="25" />
+                            <circle cx="490" cy="250" r="10" fill="#18181b" />
+                        </g>
+
+                        <!-- СКЛАДЫ ГОТОВОЙ ПРОДУКЦИИ (Желтые конусы) -->
+                        <g class="layout-node" data-title="Склад: Отсев (0-5 мм)">
+                            <circle cx="670" cy="80" r="35" fill="#eab308" fill-opacity="0.7" stroke="none" />
+                            <circle cx="670" cy="80" r="15" fill="#ca8a04" fill-opacity="0.9" stroke="none" />
+                        </g>
+
+                        <g class="layout-node" data-title="Склад: Щебень (5-20 мм)">
+                            <circle cx="710" cy="150" r="45" fill="#eab308" fill-opacity="0.8" stroke="none" />
+                            <circle cx="710" cy="150" r="20" fill="#ca8a04" fill-opacity="0.9" stroke="none" />
+                        </g>
+
+                        <g class="layout-node" data-title="Склад: Щебень (20-40 мм)">
+                            <circle cx="670" cy="220" r="40" fill="#eab308" fill-opacity="0.75" stroke="none" />
+                            <circle cx="670" cy="220" r="18" fill="#ca8a04" fill-opacity="0.9" stroke="none" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="video-demo">
+                <h3 style="margin-bottom: 15px; font-size: 1.5rem; color: #27272a;">Оборудование в работе</h3>
+                <p style="color: #718096; margin-bottom: 20px; font-size: 0.95rem;">Смотрите реальные кадры работы
+                    комплекса ДСУ-30 на гранитном карьере.</p>
+
+                <div
+                    style="position: relative; width: 100%; flex: 1; background: #18181b; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; cursor: pointer; min-height: 250px;">
+                    <div
+                        style="width: 60px; height: 60px; background: #eab308; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(234,179,8,0.5);">
+                        <div
+                            style="width: 0; height: 0; border-style: solid; border-width: 15px 0 15px 25px; border-color: transparent transparent transparent #18181b; margin-left: 5px;">
+                        </div>
+                    </div>
+                    <p
+                        style="position: absolute; bottom: 15px; left: 15px; color: white; font-weight: bold; font-size: 0.9rem;">
+                        ▶ Дробление габбро-диабаза (Фракция 5-20)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Индивидуальный подбор и ТЭО -->
+    <div class="section-container action-grid">
+        <div class="form-wrapper">
+            <h2 style="margin-bottom: 20px; font-size: 1.5rem; color: #27272a;">Индивидуальный подбор линии</h2>
+            <p style="margin-bottom: 25px; color: #4a5568;">Заполните вводные данные, и инженер подготовит
+                предварительную спецификацию с учетом складских остатков в Челябинске.</p>
+
+            <div class="form-group">
+                <label>Исходный материал</label>
+                <select id="wa-material">
+                    <option>Гранит / Базальт</option>
+                    <option>Известняк / Мрамор</option>
+                    <option>Строительные отходы (Бетон/Кирпич)</option>
+                    <option>Металлургический шлак</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Требуемая фракция на выходе</label>
+                <input type="text" id="wa-fraction" placeholder="Например: 5-20 мм, кубовидная форма">
+            </div>
+            <div class="form-group">
+                <label>Желаемая производительность (т/ч)</label>
+                <input type="number" id="wa-capacity" placeholder="Например: 120">
+            </div>
+            <button class="btn-whatsapp" onclick="sendToWhatsApp()">Отправить запрос инженеру</button>
+        </div>
+
+        <div class="teo-card">
+            <h3 style="font-size: 1.5rem; margin-bottom: 15px;">Скачать ТЭО</h3>
+            <p style="font-size: 0.95rem; color: #a0aec0; margin-bottom: 20px;">Технико-экономическое обоснование ДСУ-30
+                (Чертежи, габариты, энергопотребление)</p>
+            <div style="font-size: 3rem; margin-bottom: 10px;">📄</div>
+            <a href="#" class="btn-download">Скачать PDF (2.4 МБ)</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация» | г. Челябинск, ул. Белорецкая, 60А</p>
+    </footer>
+
+    <script>
+        // Логика блок-схемы
+        const lineData = {
+            'feed': { title: '1. Приемный бункер и питатель', desc: 'Обеспечивает равномерную подачу горной массы.', specs: 'Мощность: 5.5 кВт', filter: 'pitately' },
+            'primary': { title: '2. Первичное дробление', desc: 'Щековая дробилка. Принимает основной удар.', specs: 'Фракция: 40-90 мм', filter: 'schekovye' },
+            'screen': { title: '3. Сортировка', desc: 'Грохот. Разделение материала на потоки.', specs: 'Площадь сита: 3.5 м²', filter: 'grohoty' },
+            'secondary': { title: '4. Вторичное дробление', desc: 'Конусная дробилка. Получение чистовой кубовидной фракции.', specs: 'Настройка щели: 12-35 мм', filter: 'konusnye' }
+        };
+
+        function showInfo(nodeId) {
+            document.querySelectorAll('.node').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const data = lineData[nodeId];
+            document.getElementById('p-title').innerHTML = data.title;
+            document.getElementById('p-desc').innerHTML = data.desc;
+            document.getElementById('p-specs').innerHTML = '<strong>Характеристика:</strong> ' + data.specs;
+            document.getElementById('p-link').href = 'catalog.html?filter=' + data.filter;
+        }
+
+        // Логика калькулятора
+        function calculateYield() {
+            const cap = document.getElementById('capacity-slider').value;
+            document.getElementById('capacity-val').innerText = cap;
+
+            document.getElementById('res-1').innerHTML = Math.round(cap * 0.3) + ' <span>т/ч</span>';
+            document.getElementById('res-2').innerHTML = Math.round(cap * 0.5) + ' <span>т/ч</span>';
+            document.getElementById('res-3').innerHTML = Math.round(cap * 0.2) + ' <span>т/ч</span>';
+        }
+
+        // Логика WhatsApp
+        function sendToWhatsApp() {
+            const material = document.getElementById('wa-material').value;
+            const fraction = document.getElementById('wa-fraction').value || 'Не указано';
+            const capacity = document.getElementById('wa-capacity').value || 'Не указано';
+
+            const text = `Здравствуйте! Интересует подбор оборудования со склада в Челябинске.\n\n⚙ Исходный материал: ${material}\n🎯 Требуемая фракция: ${fraction}\n⚡ Производительность: ${capacity} т/ч\n\nПрошу связаться со мной для уточнения деталей.`;
+
+            const encodedText = encodeURIComponent(text);
+            const phone = "79090911313";
+
+            window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
+        }
+
+        // Логика интерактивного плана цеха (SVG Tooltip)
+        const layoutNodes = document.querySelectorAll('.layout-node');
+        const layoutTooltip = document.getElementById('layout-tooltip');
+        const layoutContainer = document.getElementById('layout-container');
+
+        layoutNodes.forEach(node => {
+            node.addEventListener('mouseenter', (e) => {
+                layoutTooltip.innerText = node.getAttribute('data-title');
+                layoutTooltip.style.opacity = '1';
+            });
+
+            node.addEventListener('mousemove', (e) => {
+                const rect = layoutContainer.getBoundingClientRect();
+                // Смещение на 15px, чтобы курсор не перекрывал тултип
+                layoutTooltip.style.left = (e.clientX - rect.left + 15) + 'px';
+                layoutTooltip.style.top = (e.clientY - rect.top + 15) + 'px';
+            });
+
+            node.addEventListener('mouseleave', () => {
+                layoutTooltip.style.opacity = '0';
+            });
+        });
+
+        // Подсветка меню
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

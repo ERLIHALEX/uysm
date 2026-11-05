@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог оборудования | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .page-header {
+            background-color: #18181b;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .catalog-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            color: #27272a;
+        }
+
+        .category-list button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+            color: #4a5568;
+        }
+
+        .category-list button:hover {
+            background: #fef9c3;
+            border-color: #eab308;
+            color: #ca8a04;
+        }
+
+        .category-list button.active {
+            background: #eab308;
+            color: #18181b;
+            border-color: #eab308;
+            font-weight: bold;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: #eab308;
+            box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
+        }
+
+        .photo-order-banner {
+            background: #27272a;
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-left: 4px solid #eab308;
+        }
+
+        .photo-order-banner h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        .photo-order-banner p {
+            color: #a0aec0;
+            font-size: 0.95rem;
+        }
+
+        .btn-photo {
+            padding: 12px 25px;
+            background: #eab308;
+            color: #18181b;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-photo:hover {
+            background: #ca8a04;
+            transform: translateY(-2px);
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-color: #eab308;
+        }
+
+        .product-image {
+            height: 200px;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-category {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #27272a;
+        }
+
+        .product-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #edf2f7;
+            padding-top: 15px;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #ca8a04;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            background: #eab308;
+            color: #18181b;
+            border-radius: 4px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-small:hover {
+            background: #ca8a04;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+    <div class="page-header">
+        <h1>Складские остатки и Запчасти</h1>
+    </div>
+
+    <div class="catalog-container">
+        <aside class="sidebar">
+            <h3>Категории</h3>
+            <div class="category-list">
+                <button class="filter-btn active" data-filter="all">Все оборудование</button>
+                <button class="filter-btn" data-filter="drobilki">Дробилки</button>
+                <button class="filter-btn" data-filter="grohoty">Грохоты</button>
+                <button class="filter-btn" data-filter="konveyery">Конвейеры</button>
+                <button class="filter-btn" data-filter="zapchasti">Запчасти и бронза</button>
+            </div>
+        </aside>
+
+        <div class="content-area">
+
+            <input type="text" class="search-bar" id="search-input"
+                placeholder="Поиск по базе (например: 'плита', 'ксд-600')">
+
+            <div class="photo-order-banner">
+                <div>
+                    <h3>Система «Быстрый заказ по фото»</h3>
+                    <p>Не знаете артикул или чертеж? Загрузите фотографию сломанной детали с телефона, и мы подберем ее.
+                    </p>
+                </div>
+                <a href="photo-order.html" class="btn-photo">📷 Прикрепить фото</a>
+            </div>
+
+            <main class="products" id="product-list">
+                <!-- PRODUCTS_GRID_START -->
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация»</p>
+    </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const products = document.querySelectorAll('.product-card');
+        const searchInput = document.getElementById('search-input');
+
+        function filterProducts(category) {
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-filter="${category}"]`).classList.add('active');
+
+            products.forEach(product => {
+                const matchesCategory = category === 'all' || product.dataset.category === category;
+                const matchesSearch = product.innerText.toLowerCase().includes(searchInput.value.toLowerCase());
+
+                if (matchesCategory && matchesSearch) {
+                    product.classList.remove('hidden');
+                } else {
+                    product.classList.add('hidden');
+                }
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => filterProducts(btn.dataset.filter));
+        });
+
+        searchInput.addEventListener('input', () => {
+            const activeCategory = document.querySelector('.filter-btn.active').dataset.filter;
+            filterProducts(activeCategory);
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryFromUrl = urlParams.get('category');
+        if (categoryFromUrl) {
+            const targetBtn = document.querySelector(`[data-filter="${categoryFromUrl}"]`);
+            if (targetBtn) { filterProducts(categoryFromUrl); }
+        }
+
+        // Автоматическая подсветка активного пункта меню
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

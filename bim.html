@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Центр проектирования и Экспертиза | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .page-header {
+            background-color: #18181b;
+            /* Глубокий графит */
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #cbd5e0;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #27272a;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        /* --- БЛОК 1: BIM БИБЛИОТЕКА --- */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #4a5568;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: #fef9c3;
+            border-color: #eab308;
+            color: #ca8a04;
+        }
+
+        .filter-btn.active {
+            background: #eab308;
+            color: #18181b;
+            /* Темный текст */
+            border-color: #eab308;
+        }
+
+        .bim-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .bim-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bim-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            border-color: #eab308;
+        }
+
+        .bim-preview {
+            height: 180px;
+            background: #27272a;
+            /* Светлый графит */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Имитация CAD-сетки на фоне превью */
+        .bim-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .bim-preview span {
+            color: #eab308;
+            /* Желтый текст */
+            font-family: monospace;
+            font-size: 1.2rem;
+            z-index: 1;
+            border: 1px solid #eab308;
+            padding: 10px 20px;
+            background: rgba(24, 24, 27, 0.8);
+            /* Полупрозрачный графит */
+        }
+
+        .bim-info {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bim-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #27272a;
+            margin-bottom: 5px;
+        }
+
+        .bim-desc {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .bim-formats {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .format-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            background: #f4f4f5;
+            color: #4a5568;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: 0.2s;
+            border: 1px solid #cbd5e0;
+        }
+
+        .format-btn:hover {
+            background: #eab308;
+            color: #18181b;
+            /* Темный текст */
+            border-color: #eab308;
+        }
+
+        /* --- БЛОК 2: ВИДЕО-ИНТЕРВЬЮ --- */
+        .interview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .interview-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .video-player {
+            height: 220px;
+            background: #18181b;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-player img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+            transition: 0.3s;
+        }
+
+        .video-player:hover img {
+            opacity: 0.4;
+        }
+
+        .play-btn {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: #eab308;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            z-index: 2;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .video-player:hover .play-btn {
+            transform: scale(1.1);
+            background: #ca8a04;
+        }
+
+        .play-triangle {
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 12px 20px;
+            border-color: transparent transparent transparent #18181b;
+            margin-left: 5px;
+        }
+
+        .interview-content {
+            padding: 25px;
+        }
+
+        .speaker-info {
+            margin-bottom: 15px;
+        }
+
+        .speaker-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .speaker-title {
+            font-size: 0.9rem;
+            color: #ca8a04;
+            /* Темно-желтый для читаемости на белом */
+            font-weight: bold;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #4a5568;
+            font-size: 1rem;
+            position: relative;
+            padding-left: 20px;
+            border-left: 3px solid #eab308;
+            /* Желтая линия цитаты */
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>Центр проектирования и Экспертиза</h1>
+        <p>Библиотека 3D-моделей для интеграции в проекты ГОК и реальный опыт эксплуатации нашего оборудования.</p>
+    </div>
+
+    <!-- БЛОК 1: BIM БИБЛИОТЕКА -->
+    <div class="section-container">
+        <div class="section-title">
+            <span>Библиотека CAD / BIM моделей</span>
+            <span style="font-size: 1rem; color: #718096; font-weight: normal;">Форматы: STEP, DWG, RFA</span>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-btn active" data-filter="all">Все модели</button>
+            <button class="filter-btn" data-filter="drobilki">Дробилки</button>
+            <button class="filter-btn" data-filter="grohoty">Грохоты</button>
+            <button class="filter-btn" data-filter="konveyery">Конвейеры</button>
+        </div>
+
+        <div class="bim-grid" id="bim-grid">
+            <!-- Карточка 1 -->
+            <div class="bim-card" data-category="drobilki">
+                <div class="bim-preview">
+                    <span>КСД-600_3D</span>
+                </div>
+                <div class="bim-info">
+                    <div class="bim-title">Конусная дробилка КСД-600</div>
+                    <div class="bim-desc">Габаритный чертеж и 3D-модель с точками крепления к фундаменту.</div>
+                    <div class="bim-formats">
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .STEP...')">.STEP</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .DWG...')">.DWG</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .RFA...')">.RFA</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка 2 -->
+            <div class="bim-card" data-category="drobilki">
+                <div class="bim-preview">
+                    <span>СМД-110А_3D</span>
+                </div>
+                <div class="bim-info">
+                    <div class="bim-title">Щековая дробилка СМД-110А</div>
+                    <div class="bim-desc">Модель первичной стадии дробления с учетом зоны обслуживания.</div>
+                    <div class="bim-formats">
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .STEP...')">.STEP</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .DWG...')">.DWG</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="bim-card" data-category="grohoty">
+                <div class="bim-preview">
+                    <span>ГИЛ-42_3D</span>
+                </div>
+                <div class="bim-info">
+                    <div class="bim-title">Грохот инерционный ГИЛ-42</div>
+                    <div class="bim-desc">Модель с указанием углов наклона и точек подключения привода.</div>
+                    <div class="bim-formats">
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .STEP...')">.STEP</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .DWG...')">.DWG</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .RFA...')">.RFA</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточка 4 -->
+            <div class="bim-card" data-category="konveyery">
+                <div class="bim-preview">
+                    <span>CONV-800_3D</span>
+                </div>
+                <div class="bim-info">
+                    <div class="bim-title">Конвейер ленточный (Ширина 800мм)</div>
+                    <div class="bim-desc">Параметрическая модель. Длина настраивается в САПР.</div>
+                    <div class="bim-formats">
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .STEP...')">.STEP</a>
+                        <a href="#" class="format-btn" onclick="alert('Скачивание .RFA...')">.RFA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- БЛОК 2: ВИДЕО-ИНТЕРВЬЮ -->
+    <div class="section-container" style="margin-bottom: 80px;">
+        <div class="section-title">
+            <span>Опыт эксплуатации (Отзывы)</span>
+        </div>
+
+        <div class="interview-grid">
+            <!-- Интервью 1 -->
+            <div class="interview-card">
+                <div class="video-player" onclick="alert('Запуск видео на YouTube...')">
+                    <div style="position: absolute; width: 100%; height: 100%; background: #27272a;"></div>
+                    <div class="play-btn">
+                        <div class="play-triangle"></div>
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 15px; left: 15px; color: white; font-weight: bold; z-index: 2;">
+                        ▶ Наработка КСД-600 на граните
+                    </div>
+                </div>
+                <div class="interview-content">
+                    <div class="speaker-info">
+                        <div class="speaker-name">Иван Сергеевич</div>
+                        <div class="speaker-title">Главный механик гранитного карьера (Урал)</div>
+                    </div>
+                    <div class="quote">
+                        «Дробилка показала отличную наработку на отказ. Особенно порадовало качество литья — бронзовые
+                        втулки от ЮУСМ ходят на 30% дольше заводских аналогов. Ремонтируемся реже.»
+                    </div>
+                </div>
+            </div>
+
+            <!-- Интервью 2 -->
+            <div class="interview-card">
+                <div class="video-player" onclick="alert('Запуск видео на YouTube...')">
+                    <div style="position: absolute; width: 100%; height: 100%; background: #3f3f46;"></div>
+                    <div class="play-btn">
+                        <div class="play-triangle"></div>
+                    </div>
+                    <div
+                        style="position: absolute; bottom: 15px; left: 15px; color: white; font-weight: bold; z-index: 2;">
+                        ▶ Запуск ДСУ-30 зимой
+                    </div>
+                </div>
+                <div class="interview-content">
+                    <div class="speaker-info">
+                        <div class="speaker-name">Алексей Владимирович</div>
+                        <div class="speaker-title">Технический директор ГОК (Сибирь)</div>
+                    </div>
+                    <div class="quote">
+                        «Монтаж и пусконаладка линии прошли штатно даже при -30°C. Инженеры ЮУСМ грамотно спроектировали
+                        фундаменты. Оборудование надежное, выдаем кубовидный щебень строго по ГОСТу.»
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация»</p>
+    </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const bimCards = document.querySelectorAll('.bim-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                bimCards.forEach(card => {
+                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

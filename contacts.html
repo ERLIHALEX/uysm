@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .page-header {
+            background-color: #18181b;
+            /* Глубокий графит */
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .contacts-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .info-block {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-block h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: #27272a;
+        }
+
+        .contact-item {
+            margin-bottom: 25px;
+        }
+
+        .contact-item h4 {
+            color: #718096;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .contact-item p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .btn-whatsapp {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #eab308;
+            /* Индустриальный желтый */
+            color: #18181b;
+            /* Темный текст */
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #ca8a04;
+        }
+
+        .map-block {
+            height: 100%;
+            min-height: 400px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #cbd5e0;
+        }
+
+        /* Интерактивная карта Яндекс */
+        .map-block iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>Свяжитесь с нами</h1>
+    </div>
+
+    <div class="contacts-container">
+        <div class="info-block">
+            <h2>ООО «Южуралстроймеханизация»</h2>
+
+            <div class="contact-item">
+                <h4>Адрес склада и офиса</h4>
+                <p>454087, г. Челябинск, ул. Белорецкая, д. 60А</p>
+            </div>
+
+            <div class="contact-item">
+                <h4>Телефоны отдела продаж</h4>
+                <p>+7 (351) 262-41-60</p>
+                <p>+7 (909) 091-13-13</p>
+                <a href="https://wa.me/79090911313" class="btn-whatsapp" target="_blank">Написать в WhatsApp</a>
+            </div>
+
+            <div class="contact-item">
+                <h4>Электронная почта</h4>
+                <p>uysm@mail.ru</p>
+            </div>
+
+            <div class="contact-item" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+                <h4>Реквизиты компании</h4>
+                <p style="font-size: 0.95rem; font-weight: normal; color: #4a5568;">Мы работаем по официальным договорам
+                    поставки с полным пакетом закрывающих документов.</p>
+            </div>
+        </div>
+
+        <div class="map-block">
+            <!-- Встроенная Яндекс Карта по адресу ул. Белорецкая 60А -->
+            <iframe
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A7a192c79b76e33db04b901fc9317de75630d7bc6527581bc620b7bc19a31a90c&amp;source=constructor"
+                width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация»</p>
+    </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

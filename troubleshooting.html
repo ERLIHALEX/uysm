@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивный гайд по ремонту | ЮУСМ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27272a;
+        }
+
+        .logo span {
+            color: #eab308;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #eab308;
+        }
+
+        .page-header {
+            background-color: #18181b;
+            /* Глубокий графит */
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #cbd5e0;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .trouble-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .diagnostic-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .question-title {
+            font-size: 1.5rem;
+            color: #27272a;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: #f7fafc;
+            border: 1px solid #cbd5e0;
+            padding: 15px 20px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            color: #4a5568;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background: #fef9c3;
+            /* Светло-желтый фон */
+            border-color: #eab308;
+            /* Желтая рамка */
+            color: #ca8a04;
+            /* Темно-желтый текст */
+            transform: translateX(5px);
+        }
+
+        .option-btn::after {
+            content: '→';
+            font-weight: bold;
+            color: #a0aec0;
+        }
+
+        .option-btn:hover::after {
+            color: #eab308;
+        }
+
+        /* Терминальный узел (Результат) */
+        .result-box {
+            background: #ffffff;
+            border: 2px solid #eab308;
+            /* Индустриальная рамка */
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.1);
+        }
+
+        .result-box h3 {
+            color: #27272a;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .result-box p {
+            color: #4a5568;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .btn-action {
+            padding: 15px 30px;
+            background: #eab308;
+            color: #18181b;
+            /* Темный текст */
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.3s;
+            display: inline-block;
+        }
+
+        .btn-action:hover {
+            background: #ca8a04;
+        }
+
+        .btn-reset {
+            margin-top: 20px;
+            background: transparent;
+            border: none;
+            color: #718096;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+
+        .btn-reset:hover {
+            color: #4a5568;
+        }
+
+        footer {
+            background-color: #18181b;
+            color: #cbd5e0;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">ЮУ<span>СМ</span></div>
+            <nav class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="catalog_template.html">Каталог</a>
+                <a href="lines.html">Линии</a>
+                <a href="blueprint.html">Чертежи (ГОСТ)</a>
+                <a href="troubleshooting.html">Гайд по ремонту</a>
+                <a href="photo-order.html">Заказ по фото</a>
+                <a href="compare.html">Сравнение</a>
+                <a href="bim.html"> CAD/BIM</a>
+                <a href="cabinet.html">Кабинет</a>
+                <a href="contacts.html">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <h1>Интерактивный траблшутинг</h1>
+        <p>Дерево решений для механиков. Выберите симптомы неисправности, чтобы получить диагноз и подобрать нужные
+            запчасти.</p>
+    </div>
+
+    <div class="trouble-container">
+        <div class="diagnostic-card" id="diagnostic-card">
+            <h2 class="question-title" id="question-text">Загрузка системы диагностики...</h2>
+            <div class="options-grid" id="options-container">
+                <!-- Кнопки генерируются через JS -->
+            </div>
+
+            <div class="result-box" id="result-container">
+                <h3 id="result-title">Диагноз</h3>
+                <p id="result-desc">Описание решения проблемы.</p>
+                <a href="#" id="result-link" class="btn-action">Перейти к запчастям</a>
+                <button class="btn-reset" onclick="initTree()">Начать заново</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 ООО «Южуралстроймеханизация»</p>
+    </footer>
+
+    <script>
+        // Структура данных: Направленный ациклический граф (DAG)
+        const diagnosticTree = {
+            question: "Шаг 1. Выберите тип оборудования, с которым возникла проблема:",
+            options: [
+                {
+                    label: "Конусная дробилка (КСД/КМД)",
+                    next: {
+                        question: "Шаг 2. Что наблюдается при работе конусной дробилки?",
+                        options: [
+                            {
+                                label: "Сильная вибрация, стук, дробилка «прыгает»",
+                                next: {
+                                    question: "Шаг 3. Проверьте масло в гидросистеме. Есть ли в нем бронзовая стружка?",
+                                    options: [
+                                        {
+                                            label: "Да, есть металлическая/бронзовая стружка",
+                                            result: {
+                                                title: "Критический износ бронзовых втулок или подпятника",
+                                                desc: "Произошел износ цилиндрической или конической втулки, либо сферического подпятника. Требуется немедленная остановка и замена бронзовых деталей.",
+                                                link: "catalog.html?category=zapchasti",
+                                                linkText: "Подобрать бронзовые втулки"
+                                            }
+                                        },
+                                        {
+                                            label: "Нет, масло чистое",
+                                            result: {
+                                                title: "Ослабление крепления брони",
+                                                desc: "Проверьте затяжку гайки главного вала и состояние цинковой заливки (или компаунда) между конусом и броней.",
+                                                link: "catalog.html?category=zapchasti",
+                                                linkText: "Подобрать брони (плиты дробящие)"
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                label: "Падает производительность, крупная фракция на выходе",
+                                result: {
+                                    title: "Износ дробящих поверхностей",
+                                    desc: "Профиль дробящих плит (подвижной и неподвижной брони) изношен. Требуется регулировка щели или замена комплекта броней.",
+                                    link: "catalog.html?category=zapchasti",
+                                    linkText: "Каталог дробящих плит"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    label: "Щековая дробилка (СМД)",
+                    next: {
+                        question: "Шаг 2. Какой симптом у щековой дробилки?",
+                        options: [
+                            {
+                                label: "Заклинивание, остановка маховиков",
+                                result: {
+                                    title: "Попадание недробимого тела или поломка распорной плиты",
+                                    desc: "Распорная плита выполняет роль предохранителя. При попадании металла она ломается, спасая станину. Требуется замена распорной плиты.",
+                                    link: "catalog.html?category=zapchasti",
+                                    linkText: "Заказать распорную плиту"
+                                }
+                            },
+                            {
+                                label: "Греются подшипники главного вала",
+                                result: {
+                                    title: "Проблема с узлом подшипников",
+                                    desc: "Недостаток смазки, перетяжка или физический износ роликоподшипников. Проверьте систему смазки и зазоры.",
+                                    link: "contacts.html",
+                                    linkText: "Связаться с инженером"
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    label: "Ленточный конвейер",
+                    result: {
+                        title: "Износ роликов или порыв ленты",
+                        desc: "Чаще всего проблема кроется в заклинивших конвейерных роликах, что приводит к сходу или порыву ленты.",
+                        link: "catalog.html?category=konveyery",
+                        linkText: "Подобрать ролики и ленту"
+                    }
+                }
+            ]
+        };
+
+        // DOM Элементы
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const resultContainer = document.getElementById('result-container');
+
+        const resultTitle = document.getElementById('result-title');
+        const resultDesc = document.getElementById('result-desc');
+        const resultLink = document.getElementById('result-link');
+
+        function renderNode(node) {
+            resultContainer.style.display = 'none';
+            questionText.style.display = 'block';
+            optionsContainer.style.display = 'grid';
+            optionsContainer.innerHTML = '';
+            questionText.innerText = node.question;
+
+            node.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = option.label;
+
+                btn.onclick = () => {
+                    if (option.next) {
+                        renderNode(option.next);
+                    } else if (option.result) {
+                        showResult(option.result);
+                    }
+                };
+
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function showResult(result) {
+            questionText.style.display = 'none';
+            optionsContainer.style.display = 'none';
+            resultContainer.style.display = 'flex';
+
+            resultTitle.innerText = result.title;
+            resultDesc.innerText = result.desc;
+            resultLink.href = result.link;
+            resultLink.innerText = result.linkText;
+        }
+
+        function initTree() {
+            renderNode(diagnosticTree);
+        }
+
+        document.addEventListener('DOMContentLoaded', initTree);
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let currentPage = window.location.pathname.split('/').pop();
+            if (currentPage === '') currentPage = 'index.html';
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.style.color = '#eab308';
+                    link.style.fontWeight = 'bold';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
